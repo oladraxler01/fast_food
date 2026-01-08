@@ -1,14 +1,30 @@
-import {SplashScreen,Stack } from "expo-router";
+import {SplashScreen, Stack} from "expo-router";
 import { useFonts } from 'expo-font';
-import { useEffect } from "react";
-/*import * as SplashScreen from 'expo-splash-screen';*/
+import { useEffect} from "react";
 
 import './globals.css';
+import * as Sentry from '@sentry/react-native';
+import useAuthStore from "@/store/auth.store";
 
-// Keep the splash screen visible while fonts load
-SplashScreen.preventAutoHideAsync();
+Sentry.init({
+  dsn: 'https://94edd17ee98a307f2d85d750574c454a@o4506876178464768.ingest.us.sentry.io/4509588544094208',
 
-export default function RootLayout() {
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration(), Sentry.feedbackIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
+
+export default Sentry.wrap(function RootLayout() {
+  const { isLoading, fetchAuthenticatedUser } = useAuthStore();
+
   const [fontsLoaded, error] = useFonts({
     "QuickSand-Bold": require('../assets/fonts/Quicksand-Bold.ttf'),
     "QuickSand-Medium": require('../assets/fonts/Quicksand-Medium.ttf'),
@@ -18,11 +34,17 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (error) throw error;
-    if (fontsLoaded) SplashScreen.hideAsync();
+    if(error) throw error;
+    if(fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 
-  if (!fontsLoaded && !error) return null;
+  useEffect(() => {
+    fetchAuthenticatedUser()
+  }, []);
+
+  if(!fontsLoaded || isLoading) return null;
 
   return <Stack screenOptions={{ headerShown: false }} />;
-}
+});
+
+/*Sentry.showFeedbackWidget();*/
