@@ -42,7 +42,7 @@ export default Sentry.wrap(function RootLayout() {
     fetchAuthenticatedUser()
   }, []);
 
-  if(!fontsLoaded || isLoading) return null;
+  if (!fontsLoaded) return null;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 });

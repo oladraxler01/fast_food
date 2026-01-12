@@ -32,7 +32,7 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
         const newAccount = await account.create(ID.unique(), email, password, name)
         if(!newAccount) throw Error;
 
-        await signIn({ email, password });
+        /*await signIn({ email, password });*/
 
         const avatarUrl = avatars.getInitialsURL(name);
 
@@ -106,3 +106,15 @@ export const getCategories = async () => {
         throw new Error(e as string);
     }
 }
+
+export const logout = async () => {
+    try {
+        // Changing this to 'deleteSessions' (plural) clears ALL active
+        // sessions so you don't get that "session active" error.
+        await account.deleteSessions();
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};

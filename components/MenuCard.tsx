@@ -19,4 +19,5 @@ const MenuCard = ({ item: { $id, image_url, name, price }}: { item: MenuItem}) =
         </TouchableOpacity>
     )
 }
+
 export default MenuCard

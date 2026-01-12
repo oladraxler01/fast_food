@@ -2,6 +2,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View} from "react-native";
 import {Fragment} from "react";
 import cn from 'clsx';
+import { router } from "expo-router";
 
 import CartButton from "@/components/CartButton";
 import {images, offers} from "@/constants";
@@ -20,11 +21,12 @@ export default function Index() {
                     return (
                         <View>
                             <Pressable
+                                // 🔴 Use String() to ensure the ID format is consistent
+                                onPress={() => router.push(`/details/${String(item.id)}`)}
                                 className={cn("offer-card", isEven ? 'flex-row-reverse' : 'flex-row')}
                                 style={{ backgroundColor: item.color }}
                                 android_ripple={{ color: "#fffff22"}}
                             >
-                                {({ pressed }) => (
                                     <Fragment>
                                         <View className={"h-full w-1/2"}>
                                             <Image source={item.image} className={"size-full"} resizeMode={"contain"} />
