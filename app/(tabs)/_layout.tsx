@@ -44,7 +44,7 @@ export default function TabLayout() {
                 borderBottomLeftRadius: 50,
                 borderBottomRightRadius: 50,
                 marginHorizontal: 15,
-                height: 80, // Keeping your height
+                height: 70, // Keeping your height
                 position: 'absolute',
                 bottom: 40, // Keeping your position
                 backgroundColor: 'white',
@@ -54,6 +54,9 @@ export default function TabLayout() {
                 shadowRadius: 10,
                 elevation: 5,
                 borderTopWidth: 0, // Removes the ugly top line
+                paddingTop:10,
+                paddingBottom:10,
+
             }
         }}>
             <Tabs.Screen

@@ -1,9 +1,9 @@
-import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-native-appwrite";
-import {CreateUserParams, GetMenuParams, SignInParams} from "@/type";
+import { Account, Avatars, Client, Databases, ID, Query, Storage, Functions } from "react-native-appwrite"; // 🔴 Added Functions here
+import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
-    projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!, // ✅ fixed
+    projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     platform: "com.jsm.foodordering",
     databaseId: '695d706b00091c98a60b',
     bucketId:'6960385b0018fadaebc4',
@@ -25,14 +25,14 @@ export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
 const avatars = new Avatars(client);
+// 🔴 This is now correctly initialized and exported
+export const functions = new Functions(client);
 
 
 export const createUser = async ({ email, password, name }: CreateUserParams) => {
     try {
         const newAccount = await account.create(ID.unique(), email, password, name)
         if(!newAccount) throw Error;
-
-        /*await signIn({ email, password });*/
 
         const avatarUrl = avatars.getInitialsURL(name);
 
@@ -109,8 +109,6 @@ export const getCategories = async () => {
 
 export const logout = async () => {
     try {
-        // Changing this to 'deleteSessions' (plural) clears ALL active
-        // sessions so you don't get that "session active" error.
         await account.deleteSessions();
         return true;
     } catch (error) {

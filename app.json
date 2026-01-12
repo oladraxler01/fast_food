@@ -8,26 +8,18 @@
     "scheme": "fastfood",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.fastfood"
     },
-
     "android": {
+      "package": "com.yourname.fastfood",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#E6F4FE"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "edgeToEdgeEnabled": true
     },
-
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-
     "plugins": [
       "expo-router",
       [
@@ -36,10 +28,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
+          "backgroundColor": "#ffffff"
         }
       ],
       [
@@ -49,9 +38,15 @@
           "project": "jsm_reactnative_food-ordering",
           "organization": "olasunkanmi-ogunkuade"
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.fastfood",
+          "enableGooglePay": true
+        }
       ]
     ],
-
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
