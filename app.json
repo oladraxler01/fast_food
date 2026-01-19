@@ -50,6 +50,19 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d61c35c4-dc66-4819-a275-398bfae94685"
+      }
+    },
+    "owner": "oladraxler",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d61c35c4-dc66-4819-a275-398bfae94685"
     }
   }
 }

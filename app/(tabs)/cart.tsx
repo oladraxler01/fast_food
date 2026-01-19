@@ -6,9 +6,9 @@ import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CartItem";
 import { useStripe } from '@stripe/stripe-react-native';
-// 🔴 Import your Appwrite configuration
 import { functions } from "@/lib/appwrite";
 import { ExecutionMethod } from "react-native-appwrite";
+import { router } from "expo-router";
 
 interface PaymentInfoStripeProps {
     label: string;
@@ -40,7 +40,7 @@ const Cart = () => {
         try {
             // 1. Call Appwrite Function to get the Stripe Client Secret
             const response = await functions.createExecution(
-                '6964ed6200314a9c3649', // 🔴 Your real Function ID is now here
+                '6964ed6200314a9c3649',
                 JSON.stringify({ amount: parseFloat(finalAmount) }),
                 false,
                 '/',
@@ -56,7 +56,7 @@ const Cart = () => {
             // 3. Initialize the real Stripe Payment Sheet
             const { error: initError } = await initPaymentSheet({
                 merchantDisplayName: "Fast Food App",
-                paymentIntentClientSecret: data.clientSecret, // 🔴 Now using real data
+                paymentIntentClientSecret: data.clientSecret,
                 defaultBillingDetails: { name: 'Customer' }
             });
 
@@ -71,8 +71,24 @@ const Cart = () => {
             if (presentError) {
                 Alert.alert("Payment Cancelled", presentError.message);
             } else {
-                Alert.alert("Success", "Payment confirmed! Your food is being prepared.");
+                // 🔴 SUCCESS!
+                Alert.alert("Success", "Payment confirmed!");
+
+                // 1. Prepare data BEFORE clearing cart
+                const orderData = JSON.stringify(items);
+                const orderTotal = finalAmount;
+
+                // 2. Empty the cart
                 clearCart();
+
+                // 3. Navigate to Tracking Page and PASS THE DATA
+                router.push({
+                    pathname: "/tracking",
+                    params: {
+                        items: orderData,
+                        total: orderTotal
+                    }
+                });
             }
         } catch (err: any) {
             console.error(err);
